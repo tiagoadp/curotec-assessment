@@ -81,6 +81,7 @@ npm run lint
 
 ## Architecture
 
+```
 curotec-assessment/
 ├── backend/           # .NET Microservices
 │   ├── Products/      # Product management
@@ -88,6 +89,7 @@ curotec-assessment/
 │   └── Customers/     # Customer profiles
 ├── frontend/          # Angular application
 └── docker-compose.yml # Container orchestration
+```
 
 ## Important Notes
 ### First-time setup:
