@@ -1,0 +1,1 @@
+{"ast":null,"code":"// Angular polyfills\nimport 'zone.js/dist/zone';","map":{"version":3,"names":[],"sources":["/home/tiagoadp/TRABALHO/personal/curotec/frontend/src/polyfills.ts"],"sourcesContent":["// Angular polyfills\nimport 'zone.js/dist/zone';"],"mappings":"AAAA;AACA,OAAO,mBAAmB","ignoreList":[]},"metadata":{},"sourceType":"module","externalDependencies":[]}

@@ -1,0 +1,94 @@
+services:
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "tmpSqlPassword321"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P tmpSqlPassword321 -C -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - sql-data:/var/opt/mssql
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - redis-data:/data
+
+  customers-api:
+    build:
+      context: ./backend
+      dockerfile: Customers/Dockerfile
+    ports:
+      - "5000:80"
+    depends_on:
+      sql-server:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sql-server;Database=CurotecCustomers;User Id=sa;Password=tmpSqlPassword321;TrustServerCertificate=true;
+      - Redis__Configuration=redis:6379
+
+  products-api:
+    build:
+      context: ./backend
+      dockerfile: Products/Dockerfile
+    ports:
+      - "5001:80"
+    depends_on:
+      sql-server:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sql-server;Database=CurotecProducts;User Id=sa;Password=tmpSqlPassword321;TrustServerCertificate=true;
+      - Redis__Configuration=redis:6379
+      - Services__Customers=http://customers-api
+      - Services__Orders=http://orders-api
+
+  orders-api:
+    build:
+      context: ./backend
+      dockerfile: Orders/Dockerfile
+    ports:
+      - "5002:80"
+    depends_on:
+      sql-server:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sql-server;Database=CurotecOrders;User Id=sa;Password=tmpSqlPassword321;TrustServerCertificate=true;
+      - Redis__Configuration=redis:6379
+      - Services__Products=http://products-api
+      - Services__Customers=http://customers-api
+
+  angular-app:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - products-api
+      - orders-api
+      - customers-api
+
+volumes:
+  sql-data:
+  redis-data:

@@ -1,0 +1,1 @@
+{"ast":null,"code":"export const environment = {\n  production: true,\n  api: {\n    customers: 'http://localhost:5000',\n    products: 'http://localhost:5001',\n    orders: 'http://localhost:5002'\n  }\n};","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
