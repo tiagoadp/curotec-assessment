@@ -50,17 +50,21 @@ Access Swagger UI for API documentation at:
 docker-compose up --build
 
 ### Apply migrations
+```
 docker-compose exec products-api dotnet ef database update
 docker-compose exec orders-api dotnet ef database update
 docker-compose exec customers-api dotnet ef database update
+```
 
 ### Run tests (from source directory)
 dotnet test
 
 ### Create new migration
+```
 dotnet ef migrations add MIGRATION_NAME --project backend/Customers
 dotnet ef migrations add MIGRATION_NAME --project backend/Products
 dotnet ef migrations add MIGRATION_NAME --project backend/Orders
+```
 
 ## Frontend Commands
 
