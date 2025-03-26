@@ -46,37 +46,37 @@ Access Swagger UI for API documentation at:
 
 ## Backend Commands
 
-# Run all services
+### Run all services
 docker-compose up --build
 
-# Apply migrations
+### Apply migrations
 docker-compose exec products-api dotnet ef database update
 docker-compose exec orders-api dotnet ef database update
 docker-compose exec customers-api dotnet ef database update
 
-# Run tests (from source directory)
+### Run tests (from source directory)
 dotnet test
 
-# Create new migration
+### Create new migration
 dotnet ef migrations add MIGRATION_NAME --project backend/Customers
 dotnet ef migrations add MIGRATION_NAME --project backend/Products
 dotnet ef migrations add MIGRATION_NAME --project backend/Orders
 
 ## Frontend Commands
 
-# Install dependencies
+### Install dependencies
 npm install
 
-# Development server
+### Development server
 npm start
 
-# Production build
+### Production build
 npm run build
 
-# Run tests
+### Run tests
 npm test
 
-# Lint code
+### Lint code
 npm run lint
 
 ## Architecture
@@ -90,10 +90,10 @@ curotec-assessment/
 └── docker-compose.yml # Container orchestration
 
 ## Important Notes
-# First-time setup:
+### First-time setup:
 docker-compose build --no-cache
 docker-compose up -d
 
-# Swagger requires development environment in docker-compose.yml:
+### Swagger requires development environment in docker-compose.yml:
 environment:
   - ASPNETCORE_ENVIRONMENT=Development
